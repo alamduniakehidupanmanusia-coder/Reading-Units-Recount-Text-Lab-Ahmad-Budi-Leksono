@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reading Units Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#12070a;--bg2:#1d0c10;--tx:#fff3d6;--mu:#c9a98a;--ac:#ffc933;--ac2:#e5233a;--card:rgba(255,201,51,.06);--bd:rgba(255,201,51,.2);--ok:#3ddc97;--bad:#ff5468;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme=light]{--bg:#fff8e6;--bg2:#fff;--tx:#2b0d10;--mu:#7a5a46;--ac:#c98a00;--ac2:#c3162d;--card:rgba(255,255,255,.9);--bd:rgba(140,70,20,.22);--ok:#0a8f5a;--bad:#c3162d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input{-webkit-user-select:text;user-select:text}
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--tx);background:radial-gradient(800px 500px at 90% -10%,rgba(229,35,58,.3),transparent),radial-gradient(800px 500px at -10% 110%,rgba(255,201,51,.2),transparent),var(--bg);min-height:100vh}
+.app{display:flex;min-height:100vh}
+aside{width:236px;padding:18px 12px;background:var(--bg2);border-right:1px solid var(--bd);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px}
+.logo{font-family:Orbitron,sans-serif;font-weight:800;font-size:16px;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent;margin:4px 8px 14px}
+.nav{all:unset;box-sizing:border-box;cursor:pointer;padding:10px 12px;border-radius:12px;color:var(--mu);font-weight:600;border:1px solid transparent;display:block;font-size:14px}
+.nav:hover{color:var(--tx)}.nav.on{color:var(--tx);background:var(--card);border-color:var(--ac);box-shadow:0 0 16px rgba(255,201,51,.3)}
+.by{margin-top:auto;font-size:12px;color:var(--mu);padding:8px}.by b{color:var(--tx)}
+.wrap{flex:1;min-width:0;padding:18px 22px 40px}
+.top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin-bottom:18px}
+.pill{background:var(--card);border:1px solid var(--bd);border-radius:999px;padding:8px 14px;font-size:13px}
+.timer{font-family:Orbitron,sans-serif;font-weight:600;color:var(--ac)}.timer.low{color:var(--bad)}
+button.b{cursor:pointer;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:999px;padding:8px 14px;font-weight:600;font-size:13px}
+button.p{cursor:pointer;border:0;background:linear-gradient(90deg,var(--ac),var(--ac2));color:#fff;border-radius:12px;padding:12px 22px;font-weight:700;font-size:15px;box-shadow:0 6px 22px rgba(229,35,58,.35)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:18px;margin-bottom:14px;backdrop-filter:blur(10px)}
+h1{font-family:Orbitron,sans-serif;font-size:21px;margin:0 0 6px}h3{margin:0 0 8px;color:var(--ac)}
+.mu{color:var(--mu);font-size:14px}
+label{display:block;font-size:13px;color:var(--mu);margin:10px 0 4px}
+input,select{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--tx);font-size:15px;font-family:inherit}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+.o{cursor:pointer;padding:8px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--tx);font-size:14px;text-align:left}
+.o.sel{border-color:var(--ac);box-shadow:0 0 12px rgba(255,201,51,.45)}.o.ok{border-color:var(--ok);background:rgba(61,220,151,.18)}.o.no{border-color:var(--bad);background:rgba(255,84,104,.18)}
+.q{font-weight:600}.txt{line-height:1.75;font-size:15px}
+.res{font-family:Orbitron,sans-serif;font-size:28px}.good{color:var(--ok)}.bad{color:var(--bad)}
+.bank{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.bank span{padding:6px 12px;border-radius:999px;background:linear-gradient(90deg,rgba(255,201,51,.25),rgba(229,35,58,.25));border:1px solid var(--bd);font-weight:600}
+.sm{display:flex;gap:10px;align-items:center;margin:8px 0;flex-wrap:wrap}.sm select{width:auto;min-width:150px}
+.log{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--ac);min-height:20px}
+canvas{max-width:100%;height:auto;border-radius:10px;border:1px solid var(--bd);display:block;margin:10px 0}
+.over{background:rgba(229,35,58,.18);border:1px solid var(--bad);padding:12px;border-radius:12px;margin-bottom:12px;font-weight:600}
+#gate{position:fixed;inset:0;z-index:99;display:none;align-items:center;justify-content:center;padding:20px;background:radial-gradient(900px 600px at 80% 0,rgba(229,35,58,.4),transparent),radial-gradient(800px 500px at 0 100%,rgba(255,201,51,.3),transparent),var(--bg)}
+#gate .card{width:100%;max-width:400px;text-align:center}
+@media(max-width:760px){.app{flex-direction:column}aside{width:100%;height:auto;position:static;flex-direction:row;overflow-x:auto;padding:10px}.logo,.by{display:none}.nav{white-space:nowrap}.wrap{padding:14px}}
+@media print{body{display:none}}
+</style></head><body>
+<div id="gate"></div>
+<div class="app"><aside id="side"></aside>
+<div class="wrap"><div class="top"><div class="pill">🕒 <span id="clock"></span></div><div class="pill timer" id="tm">40:00</div>
+<div style="display:flex;gap:8px"><button class="b" data-a="lang" id="bl"></button><button class="b" data-a="theme" id="bt"></button></div></div>
+<main id="main"></main></div></div>
+<script>
+const T={id:{by:"Dibuat oleh",nav:["Identitas","Sertifikat"],unit:"Unit",idt:"Identitas Murid",nm:"Nama",cl:"Kelas",no:"Nomor Presensi",ma:"Asal Madrasah",start:"Simpan & Mulai",idm:"Isi semua data. Waktu 40 menit dimulai setelah data disimpan. Jika identitas berubah, aktivitas diacak ulang otomatis (materi sama) dan waktu diulang. Membuka tab lain akan mengunci aplikasi.",fill:"Lengkapi identitas dahulu.",rd:"Teks Bacaan",vr:"Vocabulary Review",rc:"Reading Comprehension",sm:"Summary: isi dengan kata yang tepat",pick:"-- pilih --",chk:"Periksa Jawaban",retry:"Ulangi (diacak)",score:"Skor",pass:"Selamat! Skor ≥ 80, sertifikat tersedia.",fail:"Skor belum mencapai 80. Coba lagi.",time:"Waktu habis! Aplikasi berhenti otomatis. Jawaban terkunci.",cert:"Sertifikat",ld:"Sertifikat terbuka jika skor ≥ 80. Skor saat ini:",dl:"Unduh Sertifikat",ana:["Menganalisis identitas…","Meriset ulang susunan aktivitas…","Materi tetap, aktivitas diacak ✔"],ready:"Siap. Kode acak:",li:"Masuk",un:"Username",pw:"Password",bad:"Username atau password salah.",lk:"Aplikasi TERKUNCI karena tab/jendela lain dibuka. Hanya admin yang dapat membuka kunci.",ul:"Buka Kunci"},
+en:{by:"Created by",nav:["Identity","Certificates"],unit:"Unit",idt:"Student Identity",nm:"Name",cl:"Class",no:"Attendance No.",ma:"Madrasah",start:"Save & Start",idm:"Fill in all fields. The 40-minute timer starts once saved. If the identity changes, activities are re-randomized automatically (same material) and the timer restarts. Opening another tab locks the app.",fill:"Please complete your identity first.",rd:"Reading Text",vr:"Vocabulary Review",rc:"Reading Comprehension",sm:"Summary: fill in the correct word",pick:"-- choose --",chk:"Check Answers",retry:"Retry (reshuffled)",score:"Score",pass:"Congratulations! Score ≥ 80, certificate unlocked.",fail:"Score is below 80. Try again.",time:"Time is up! The app stopped automatically. Answers are locked.",cert:"Certificate",ld:"Certificate unlocks at score ≥ 80. Current score:",dl:"Download Certificate",ana:["Analyzing identity…","Re-researching activity arrangement…","Material unchanged, activities shuffled ✔"],ready:"Ready. Shuffle code:",li:"Sign in",un:"Username",pw:"Password",bad:"Wrong username or password.",lk:"App LOCKED because another tab/window was opened. Only the admin can unlock it.",ul:"Unlock"}};
+const U=[
+{t:"A Day in Bed",x:"I didn't feel well when I woke up yesterday morning. My throat hurt and my nose was running. I also felt hot. My mother said I had a bad cold. I didn't want to get up, so she let me stay in bed all day. I don't usually like being in bed during the day, but I liked it yesterday. I listened to the radio and read a magazine. I slept a lot. I had all my meals in bed, though I didn't want to eat much. I had just soup and toast for lunch and some rice and chicken for dinner. By evening I was beginning to feel better. I asked my mother if I could get up and watch television but she said no. Today I feel much better, so I didn't stay in bed. I didn't go to school again, though. I'll go tomorrow if I feel well enough.",
+v:[["throat","back part of the mouth",["stop sleeping","breakfast, lunch, dinner"]],["wake up","stop sleeping",["back part of the mouth","breakfast, lunch, dinner"]],["meal","breakfast, lunch, dinner",["stop sleeping","back part of the mouth"]]],
+r:[["He stayed in bed all day because he _____.","was sick",["had a vacation","hurt his foot","needed to read"]],["On which days of the week was he probably sick?","Monday, Tuesday",["Friday, Saturday","Saturday, Sunday","Sunday, Monday"]],["What didn't he do during his day in bed?","watch television",["eat","listen to music","read"]],["What happens when your \"nose is running\"?","Watery stuff comes out of your nose.",["You can't breathe.","Blood comes out of your nose.","Your nose feels fine."]]],
+s:"He felt {} so he stayed in bed all day. His nose was running. His {} hurt. He rested in bed reading and {} to music. He did not eat very much. He {} better the next day, but he did not go to school. He needed more {}.",w:["sick","throat","listening","felt","rest"]},
+{t:"The Loan",x:"Jim loaned one of the men he worked with $500. Time passed and Jim wanted the man to pay back the money. \"When can you let me have my $500 back?\" Jim asked him. \"What $500?\" the man said. \"The $500 I loaned you,\" Jim said. \"I don't remember you loaning me $500,\" the man said. \"You must be thinking of someone else.\" Jim asked his friend what he should do. \"This man says he can't remember borrowing $500,\" Jim said. \"I can't prove that he did. I've got nothing in writing.\" His friend thought for a minute, then said, \"Write the man a letter. Ask him to pay you back the $1,000 you loaned him.\" \"But I didn't loan him $1,000,\" Jim said. \"I loaned him only $500.\" \"I know,\" his friend said. \"That's what he'll write in his reply. Then you'll have it in writing.\"",
+v:[["The days _____ very quickly when we were on vacation.","passed",["replied","tried","wanted"]],["You cannot _____ that is true, so I don't believe it.","prove",["feel","let","understand"]],["She said she would _____ him a pencil for class.","loan",["fall","succeed","remember"]]],
+r:[["Why did Jim's friend tell him to write a letter?","to trick the man",["to give the man money","to make the man angry","to make the man happy"]],["Who gave money to whom?","Jim gave it to the man.",["Jim gave it to his friend.","The man gave it to Jim.","The friend gave it to the man."]],["Where did Jim first meet the man he gave the money to?","in his office",["at his house","at the bank","on the street"]],["To \"pay someone back\" means to _____.","return money",["find money","take money","use money"]]],
+s:"Jim loaned $500 to a person he {} with. The man did not want to {} Jim back. The man said Jim did not {} him any money. Jim asked his friend {} he should do. The friend told Jim to write a {} and ask for $1,000 to trick the man.",w:["worked","pay","loan","what","letter"]},
+{t:"A Bad Storm",x:"There was a very bad storm last night. There was heavy rain and a strong wind. The rain came down all night. There were floods in some streets. The rain water went into people's houses, so they had to leave them. In the country, there was water everywhere. Some people had to travel by boat. We often have heavy rain, but not at this time of the year. It is usually dry in March. My teacher told us that the weather is different now from in the past. This is because the world is getting warmer. I hope it doesn't get too warm. If it gets too warm, the ice will melt at the poles. There will be very bad floods everywhere, and we will all have to move to the mountains!",
+v:[["Last year, there was a big _____ by the river, and some people lost their houses.","flood",["boat","pole","weather"]],["She looked _____, but she could not find the book.","everywhere",["heavy","stronger","warmer"]],["In the _____, people traveled by horses, not by cars.","past",["rain","storm","water"]]],
+r:[["What did he write about in his diary?","problems from too much rain",["a book about bad storms","his fear of the storm","not going to school because of the rain"]],["What season was it?","Spring",["Summer","Fall","Winter"]],["What does his teacher probably think about the weather?","The weather may be bad next year too.",["It was the same as the past.","They were not lucky this year.","Rain is good for plants."]],["When ice \"melts,\" it _____.","turns to water",["causes floods","gets dry","goes into the air"]]],
+s:"He wrote about a big {} in his diary. Some houses got {} water in them. In the country, some people had to use {}. His teacher said the bad {} came from the world getting {} now.",w:["storm","rain","boats","weather","warmer"]},
+{t:"Saving Money",x:"Fred needed a photograph of himself, so he went to have his picture taken. \"I would like a photograph of myself, please,\" he said. \"How much do you charge?\" \"$25 for the first one,\" the man said. \"Then $2 for other copies.\" \"O.K.\" Fred said. \"Can you take my photograph now?\" \"Yes, come this way, please.\" The man took Fred into a room and asked him to sit down. Then he turned on some bright lights and took his photograph. The man said, \"Come back tomorrow and the photograph will be ready.\" The next day, Fred went back to pick up his photograph. \"Your photograph is ready,\" the man said, and gave Fred an envelope. Fred looked at the photograph. He was not pleased. \"This photograph makes me look very old,\" he told the man. The man smiled, \"I wanted to save you money, sir,\" he said. \"With this photograph, you don't have to have your photograph taken again for many years.\"",
+v:[["The theater only costs one dollar for children under 12. (same meaning: costs)","charges",["pleases","smiles","sits"]],["The shining morning sunlight made her feel happy. (same meaning: shining)","bright",["old","many","other"]],["The soup will be done in ten minutes. Then we can eat. (same meaning: done)","ready",["his","next","this"]]],
+r:[["Why is this story funny?","The man's excuse was silly.",["Fred is not handsome.","Fred was the man's friend.","The photograph was not expensive."]],["How long did Fred need to wait for the photograph?","one day",["a few minutes","one hour","one week"]],["Why did Fred need a picture of himself?","The story does not give a reason.",["He would give it to his wife.","He needed it for a driving test","He planned to get a job."]],["If you \"don't have to\" do something, it means you _____ it.","need not do",["could not do","might not do","should not do"]]],
+s:"Fred went to have his {} taken. He had to {} one day for his photograph to be ready. Fred did not {} the photograph he saw. He said he looked {}. The man said Fred did not have to {} another photograph for a long time.",w:["photograph","wait","like","old","take"]},
+{t:"At the Doctor's Office",x:"Bill had to see a doctor. \"That's a bad cut. How did you do it?\" \"I was cutting a piece of wood and the saw slipped.\" The doctor asked about the cut. \"Have you washed it?\" \"I put it under cold water to wash off the blood.\" The doctor cleaned the cut. \"I'll wash it with some medicine.\" \"Thank you.\" The doctor thought Bill needed a shot. \"I will give you this shot too. This might hurt a little.\" \"Ouch!\" The doctor told Bill how to take care of the cut. \"I'll cover the cut, so dirt won't get in it. Keep it clean and change this cloth every day.\" Bill asked about the cut. \"How long should I keep it covered?\" \"Oh, about a week. If it doesn't get better or if it hurts, come and see me again.\" Bill was worried about getting sick. \"Do I need to take any medicine?\" \"I don't think so.\" The doctor said he would be fine. \"You'll be fine, Bill.\" \"Thank you, doctor.\"",
+v:[["She fell down when she tried to walk across the wet floor. (same meaning: fell down)","slipped",["covered","cut","washed"]],["The doctor gave him medicine through a needle. (same meaning: medicine through a needle)","a shot",["a cloth","a drink","a piece"]],["My foot feels pain because I dropped a rock on it. (same meaning: feels pain)","hurts",["changes","cleans","keeps"]]],
+r:[["Why did Bill go to see the doctor?","He had an accident.",["He always goes once a year.","He caught a cold.","He lost his saw."]],["Bill should see the doctor again if _____.","he feels pain",["he wants a shot","the blood stops","the cloth is dirty"]],["What did the doctor think about Bill's problem?","It was not serious.",["It was quite serious.","It was serious.","It was terrible."]],["You should \"wash off\" something when it is _____.","dirty",["bright","clean","fine"]]],
+s:"Bill went to the doctor because he {} his finger. The doctor put a {} on his finger to stop the blood. He also gave Bill a {}. Bill was {} about getting sick from the cut. The doctor said he would be {}.",w:["cut","cloth","shot","worried","fine"]}];
+const S={lang:"id",theme:matchMedia("(prefers-color-scheme: light)").matches?"light":"dark",view:0,auth:false,locked:false,id:null,end:0,done:false,b:[],a:[],ch:[],sc:[],err:""};
+try{S.locked=localStorage.getItem("cl_lock")==="1"}catch(_){}
+const $=s=>document.querySelector(s),t=k=>T[S.lang][k];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function hash(s){let h=1779033703;for(const c of s)h=Math.imul(h^c.charCodeAt(0),3432918353),h=h<<13|h>>>19;return h>>>0}
+function rng(a){return()=>{a|=0;a=a+1831565813|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function shuf(a,r){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function bu(u,seed){const r=rng(hash(seed+"|"+u)),d=U[u],m=q=>({q:q[0],a:q[1],o:shuf([q[1],...q[2]],r)});
+S.b[u]={v:shuf(d.v,r).map(m),r:shuf(d.r,r).map(m),w:shuf(d.w,r)};S.a[u]={v:[],r:[],s:[]};S.ch[u]=false;S.sc[u]=null}
+function build(){const k=Object.values(S.id).join("|").toLowerCase();S.code=hash(k).toString(36).toUpperCase();U.forEach((_,u)=>bu(u,k))}
+function score(u){const b=S.b[u],a=S.a[u];let c=0;b.v.forEach((q,i)=>a.v[i]===q.a&&c++);b.r.forEach((q,i)=>a.r[i]===q.a&&c++);U[u].w.forEach((w,i)=>a.s[i]===w&&c++);S.sc[u]=Math.round(c/12*100)}
+function gate(){const g=$("#gate");if(S.auth&&!S.locked){g.style.display="none";return}
+g.style.display="flex";g.innerHTML=`<div class="card"><div style="text-align:right"><button class="b" data-a="lang">🌐</button> <button class="b" data-a="theme">◐</button></div><h1>Reading Units Lab</h1>${S.locked?`<p class="bad">${t("lk")}</p>`:""}<label>${t("un")}</label><input id="gu" autocomplete="off"><label>${t("pw")}</label><input id="gp" type="password" autocomplete="off"><p class="bad">${S.err}</p><button class="p" id="gl">${S.locked?t("ul"):t("li")}</button><p class="mu">${t("by")} Ahmad Budi Leksono</p></div>`}
+function render(){document.documentElement.dataset.theme=S.theme;document.documentElement.lang=S.lang;gate();if(!S.auth)return;
+$("#bl").textContent=S.lang==="id"?"🌐 English":"🌐 Indonesia";$("#bt").textContent=S.theme==="dark"?"☀️ Light":"🌙 Dark";
+const nv=[t("nav")[0],...U.map((x,i)=>`${t("unit")} ${[33,34,37,38,40][i]}`),t("nav")[1]],ic=["🪪","📖","💰","⛈️","📷","🩺","🏅"];
+$("#side").innerHTML=`<div class="logo">READING UNITS LAB</div>`+nv.map((n,i)=>`<button class="nav ${S.view===i?"on":""}" data-v="${i}">${ic[i]} ${n}${i>0&&i<6&&S.sc[i-1]>=80?" ✔":""}</button>`).join("")+`<div class="by">${t("by")}<br><b>Ahmad Budi Leksono</b></div>`;
+const m=$("#main");
+if(S.view>0&&!S.id){m.innerHTML=`<div class="card"><h1>${nv[S.view]}</h1><p class="mu">${t("fill")}</p></div>`;return}
+if(S.view===0)m.innerHTML=`<div class="card"><h1>${t("idt")}</h1><p class="mu">${t("idm")}</p><div class="grid"><div><label>${t("nm")}</label><input id="f0" autocomplete="off" value="${esc(S.id?.n||"")}"></div><div><label>${t("cl")}</label><input id="f1" autocomplete="off" value="${esc(S.id?.c||"")}"></div><div><label>${t("no")}</label><input id="f2" inputmode="numeric" autocomplete="off" value="${esc(S.id?.p||"")}"></div><div><label>${t("ma")}</label><input id="f3" autocomplete="off" value="${esc(S.id?.m||"")}"></div></div><br><button class="p" id="go">${t("start")}</button><p class="log" id="lg">${S.id?t("ready")+" "+S.code:""}</p></div>`;
+else if(S.view<6){const u=S.view-1,d=U[u],b=S.b[u],a=S.a[u],dis=S.done||S.ch[u]?"disabled":"";
+const qs=(k,arr)=>arr.map((q,i)=>{const c=S.ch[u];return`<div class="q">${i+1}. ${esc(q.q)}</div><div class="opts">${q.o.map(o=>{let cl="o";if(c){if(o===q.a)cl+=" ok";else if(a[k][i]===o)cl+=" no"}else if(a[k][i]===o)cl+=" sel";return`<button class="${cl}" data-k="${k}" data-i="${i}" data-o="${esc(o)}" ${dis}>${esc(o)}</button>`}).join("")}</div>`}).join("");
+let n=0;const sm=esc(d.s).replace(/\{\}/g,()=>{const i=n++,c=S.ch[u];return`</p><div class="sm"><b>${i+1}.</b><select data-s="${i}" ${dis}><option value="">${t("pick")}</option>${b.w.map(w=>`<option ${a.s[i]===w?"selected":""}>${w}</option>`).join("")}</select>${c?`<b class="${a.s[i]===d.w[i]?"good":"bad"}">${a.s[i]===d.w[i]?"✔":"✘ "+d.w[i]}</b>`:""}</div><p class="txt">`});
+m.innerHTML=`<div class="card"><h1>${t("unit")} ${[33,34,37,38,40][u]}: ${d.t}</h1>${S.done?`<div class="over">${t("time")}</div>`:""}<h3>${t("rd")}</h3><p class="txt">${esc(d.x)}</p></div><div class="card"><h3>${t("vr")}</h3>${qs("v",b.v)}</div><div class="card"><h3>${t("rc")}</h3>${qs("r",b.r)}</div><div class="card"><h3>${t("sm")}</h3><div class="bank">${b.w.map(w=>`<span>${w}</span>`).join("")}</div><p class="txt">${sm}</p></div>${S.ch[u]?"":`<button class="p" data-c="${u}" ${S.done?"disabled":""}>${t("chk")}</button>`}${S.sc[u]!==null?`<div class="card" style="margin-top:14px"><div class="res ${S.sc[u]>=80?"good":"bad"}">${t("score")}: ${S.sc[u]}</div><p>${S.sc[u]>=80?t("pass"):t("fail")}</p>${S.done?"":`<button class="b" data-r="${u}">${t("retry")}</button>`} ${S.sc[u]>=80?`<button class="b" data-v="6">🏅 ${t("cert")}</button>`:""}</div>`:""}`}
+else{m.innerHTML=U.map((d,i)=>`<div class="card"><h3>${t("cert")} — ${t("unit")} ${[33,34,37,38,40][i]}: ${d.t}</h3>${S.sc[i]>=80?`<canvas id="cv${i}"></canvas><button class="p" data-d="${i}">${t("dl")}</button>`:`<p class="mu">${t("ld")} <b>${S.sc[i]===null?"–":S.sc[i]}</b></p>`}</div>`).join("");U.forEach((_,i)=>S.sc[i]>=80&&draw($("#cv"+i),i))}}
+function draw(c,i){const W=1200,H=850,x=c.getContext("2d");c.width=W;c.height=H;
+let g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,"#2a060c");g.addColorStop(1,"#7a0f1d");x.fillStyle=g;x.fillRect(0,0,W,H);
+x.strokeStyle="#ffc933";x.lineWidth=7;x.strokeRect(30,30,W-60,H-60);x.lineWidth=2;x.strokeRect(50,50,W-100,H-100);
+x.textAlign="center";x.fillStyle="#ffe9a8";x.font="700 58px Georgia,serif";x.fillText("CERTIFICATE OF ACHIEVEMENT",W/2,170);
+x.font="26px sans-serif";x.fillStyle="#ffc933";x.fillText("Reading Units Lab",W/2,220);
+x.fillStyle="#fff";x.font="24px sans-serif";x.fillText("This certificate is proudly presented to",W/2,300);
+x.font="italic 700 62px Georgia,serif";x.fillStyle="#ffc933";x.fillText(S.id.n,W/2,385,1000);
+x.fillStyle="#fff";x.font="26px sans-serif";x.fillText(`Class ${S.id.c}  •  No. ${S.id.p}  •  ${S.id.m}`,W/2,445,1000);
+x.fillText("for successfully completing",W/2,520);
+x.font="700 38px sans-serif";x.fillText(`Unit ${[33,34,37,38,40][i]} — ${U[i].t}`,W/2,575,1000);
+x.font="700 70px Georgia,serif";x.fillStyle="#ffd24a";x.fillText("Score: "+S.sc[i],W/2,670);
+x.fillStyle="#ffe9a8";x.font="22px sans-serif";x.fillText(new Date().toLocaleDateString(S.lang==="id"?"id-ID":"en-GB",{day:"numeric",month:"long",year:"numeric"}),W/2,740);
+x.fillStyle="#fff";x.font="italic 24px Georgia,serif";x.fillText("Created by Ahmad Budi Leksono",W/2,785)}
+function pad(n){return String(n).padStart(2,"0")}
+function tick(){$("#clock").textContent=new Date().toLocaleTimeString(S.lang==="id"?"id-ID":"en-GB");
+if(!S.id||S.done)return;const l=Math.max(0,Math.ceil((S.end-Date.now())/1000));
+$("#tm").textContent=pad(Math.floor(l/60))+":"+pad(l%60);$("#tm").classList.toggle("low",l<300);
+if(l<=0){S.done=true;U.forEach((_,u)=>{if(!S.ch[u]){S.ch[u]=true;score(u)}});render()}}
+function lock(){if(!S.auth||S.locked||!S.id||S.done)return;S.locked=true;S.err="";try{localStorage.setItem("cl_lock","1")}catch(_){}render()}
+document.addEventListener("visibilitychange",()=>{if(document.hidden)lock()});
+window.addEventListener("blur",lock);
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+if(d.a==="lang"){S.lang=S.lang==="id"?"en":"id";render()}
+else if(d.a==="theme"){S.theme=S.theme==="dark"?"light":"dark";render()}
+else if(b.id==="gl"){const u=$("#gu").value,p=$("#gp").value;if(btoa(u)==="YWRtaW4="&&btoa(p)==="MTIz"){S.auth=true;if(S.locked){S.locked=false;try{localStorage.removeItem("cl_lock")}catch(_){}}S.err="";render()}else{S.err=t("bad");gate()}}
+else if(d.v!==undefined){S.view=+d.v;render()}
+else if(b.id==="go"){const v=[0,1,2,3].map(i=>$("#f"+i).value.trim());if(v.some(x=>!x)){$("#lg").textContent="⚠ "+t("fill");return}
+const nid={n:v[0],c:v[1],p:v[2],m:v[3]};if(S.id&&JSON.stringify(nid)===JSON.stringify(S.id)&&!S.done){S.view=1;render();return}
+S.id=nid;S.done=false;build();S.end=Date.now()+2400000;const lg=$("#lg");let k=0;b.disabled=true;
+const iv=setInterval(()=>{if(k<3){lg.textContent="⟳ "+t("ana")[k++]}else{clearInterval(iv);S.view=1;render()}},650);tick()}
+else if(d.k!==undefined){S.a[S.view-1][d.k][+d.i]=d.o;render()}
+else if(d.c!==undefined){const u=+d.c;score(u);S.ch[u]=true;render()}
+else if(d.r!==undefined){const u=+d.r;bu(u,Object.values(S.id).join("|").toLowerCase()+Date.now());render()}
+else if(d.d!==undefined){const a=document.createElement("a");a.href=$("#cv"+d.d).toDataURL("image/png");a.download=`Certificate-${S.id.n.replace(/\W+/g,"_")}-Unit${[33,34,37,38,40][+d.d]}.png`;a.click()}});
+document.addEventListener("change",e=>{if(e.target.dataset.s!==undefined)S.a[S.view-1].s[+e.target.dataset.s]=e.target.value});
+document.addEventListener("keydown",e=>{const k=e.key.toLowerCase();
+if(e.key==="Enter"&&e.target.id&&e.target.id[0]==="g"&&$("#gl"))$("#gl").click();
+if((e.ctrlKey||e.metaKey)&&["c","v","x","a","u","s","p","i","j","t","n"].includes(k)||e.key==="F12"||e.key==="PrintScreen"||(e.shiftKey&&e.key==="Insert")){e.preventDefault();if(e.key==="PrintScreen")try{navigator.clipboard.writeText("")}catch(_){}}});
+["copy","cut","paste","contextmenu","selectstart","dragstart","drop"].forEach(n=>document.addEventListener(n,e=>{if(n==="selectstart"&&e.target.closest&&e.target.closest("input"))return;e.preventDefault()}));
+setInterval(tick,1000);tick();render();
+</script></body></html>
